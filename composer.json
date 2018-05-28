@@ -1,0 +1,35 @@
+{
+    "name"       : "nano7/foundation",
+    "description": "The Nano7 Foundation package.",
+    "license"    : "GPL-3.0-only",
+
+    "authors"    : [
+        {
+            "name" : "Bruno Goncalves",
+            "email": "bugotech@gmail.com"
+        }
+    ],
+
+    "require": {
+        "php"                   : ">=5.5.0",
+        "illuminate/config"     : "5.4.*",
+        "illuminate/container"  : "5.4.*",
+        "illuminate/filesystem" : "5.4.*",
+        "illuminate/support"    : "5.4.*",
+        "illuminate/translation": "5.4.*",
+        "vlucas/phpdotenv"      : "^2.4"
+    },
+
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ],
+
+        "psr-4": {
+            "Nano7\\Foundation\\": ""
+        }
+    },
+
+    "minimum-stability": "dev",
+    "prefer-stable"    : true
+}

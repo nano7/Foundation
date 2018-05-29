@@ -69,8 +69,12 @@ class Application extends \Illuminate\Container\Container
      */
     protected function registerEnv()
     {
-        $env = new Dotenv($this->basePath());
-        $env->load();
+        $file_env = $this->basePath('.env');
+
+        $env = new Dotenv($this->basePath(), '.env');
+        if (file_exists($file_env)) {
+            $env->load();
+        }
     }
 
     /**

@@ -90,7 +90,7 @@ class StrNameValue
 
             // Mostar texto
             $text .= ($text != '') ? $this->separator : '';
-            $text .= (intval($n) === $n) ? $n : sprintf('%s=%s', $n, $v);
+            $text .= (intval($n) === $n) ? $v : sprintf('%s=%s', $n, $v);
         }
 
         return $text;

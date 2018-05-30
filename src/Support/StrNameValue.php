@@ -8,6 +8,24 @@ class StrNameValue
     protected $data = [];
 
     /**
+     * @var null|string
+     */
+    protected $separator = "\r\n";
+
+    /**
+     * @param null $text
+     * @param null $separator
+     */
+    public function __construct($text = null, $separator = null)
+    {
+        $this->separator = $separator ? $separator : $this->separator;
+
+        if ($text) {
+            $this->setText($text);
+        }
+    }
+
+    /**
      * @param $name
      * @param null $default
      * @return null|string|mixed
@@ -66,7 +84,12 @@ class StrNameValue
     {
         $text = '';
         foreach ($this->data as $n => $v) {
-            $text .= ($text != '') ? "\r\n" : '';
+
+            // Verificar se deve colocar aspas
+            $v = (strpos($v, ' ') !== false) ? '"' . $v . '"' : $v;
+
+            // Mostar texto
+            $text .= ($text != '') ? $this->separator : '';
             $text .= is_null($v) ? $n : sprintf('%s=%s', $n, $v);
         }
 
@@ -93,7 +116,7 @@ class StrNameValue
                 $name  = $args[1];
                 $value = $args[2];
 
-                $this->data[$name] = $value;
+                $this->data[$name] = Str::value($value);
             } else {
                 $this->data[] = $line;
             }

@@ -23,4 +23,18 @@ class Filesystem extends \Illuminate\Filesystem\Filesystem
 
         return $path;
     }
+
+    /**
+     * Alias of makeDirectory.
+     *
+     * @return bool
+     */
+    public function force($path, $mode = 0777, $recursive = true)
+    {
+        if ($this->exists($path)) {
+            return true;
+        }
+
+        return $this->makeDirectory($path, $mode, $recursive);
+    }
 }

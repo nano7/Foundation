@@ -35,6 +35,31 @@ class StrNameValue
     }
 
     /**
+     * @param $filename
+     * @return bool
+     * @throws \Exception
+     */
+    public function load($filename)
+    {
+        if (!file_exists($filename)) {
+            throw new \Exception("File [$filename] not found");
+        }
+
+        return $this->setText(file_get_contents($filename));
+    }
+
+    /**
+     * @param $filename
+     * @return bool
+     */
+    public function save($filename)
+    {
+        file_put_contents($filename, $this->getText());
+
+        return true;
+    }
+
+    /**
      * @return string
      */
     public function getText()
@@ -61,7 +86,7 @@ class StrNameValue
         $text = str_replace("\r", "\n", $text);
 
         // Separar linha no array
-        $lines = explode("\n", $text);
+        $lines = explode("\n", trim($text));
 
         foreach ($lines as $line) {
             if (preg_match('/([a-zA-Z0-9_-]+)+=(.*)+/', $line, $args)) {

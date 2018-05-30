@@ -38,10 +38,24 @@ class StrNameValue
     /**
      * @param $name
      * @param $value
+     * @return $this
      */
     public function set($name, $value)
     {
         $this->data[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param $str
+     * @return $this
+     */
+    public function line($str)
+    {
+        $this->data[] = $str;
+
+        return $this;
     }
 
     /**
@@ -84,9 +98,11 @@ class StrNameValue
     {
         $text = '';
         foreach ($this->data as $n => $v) {
+            $fullLine  = (intval($n) === $n);
+            $withAspas = (strpos($v, ' ') !== false);
 
             // Verificar se deve colocar aspas
-            $v = (strpos($v, ' ') !== false) ? '"' . $v . '"' : $v;
+            $v = ($withAspas && (! $fullLine)) ? '"' . $v . '"' : $v;
 
             // Mostar texto
             $text .= ($text != '') ? $this->separator : '';

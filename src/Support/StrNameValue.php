@@ -90,7 +90,7 @@ class StrNameValue
 
             // Mostar texto
             $text .= ($text != '') ? $this->separator : '';
-            $text .= is_null($v) ? $n : sprintf('%s=%s', $n, $v);
+            $text .= (intval($n) === $n) ? $n : sprintf('%s=%s', $n, $v);
         }
 
         return $text;
@@ -112,7 +112,7 @@ class StrNameValue
         $lines = explode("\n", trim($text));
 
         foreach ($lines as $line) {
-            if (preg_match('/([a-zA-Z0-9_-]+)+=(.*)+/', $line, $args)) {
+            if (preg_match('/([a-zA-Z0-9_-]+)+=(.+)+/', $line, $args)) {
                 $name  = $args[1];
                 $value = $args[2];
 

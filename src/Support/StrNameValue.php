@@ -128,9 +128,9 @@ class StrNameValue
         $lines = explode("\n", trim($text));
 
         foreach ($lines as $line) {
-            if (preg_match('/([a-zA-Z0-9_-]+)+=(.+)+/', $line, $args)) {
+            if (preg_match('/([a-zA-Z0-9_-]+)+=(.+)?/', $line, $args)) {
                 $name  = $args[1];
-                $value = $args[2];
+                $value = $args[2] ? $args[2] : '';
 
                 $this->data[$name] = Str::value($value);
             } else {

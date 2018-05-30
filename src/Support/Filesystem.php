@@ -14,6 +14,9 @@ class Filesystem extends \Illuminate\Filesystem\Filesystem
 
         $path = '';
         foreach ($args as $arg) {
+            $arg = str_replace('/', DIRECTORY_SEPARATOR, $arg);
+            $arg = str_replace('\\', DIRECTORY_SEPARATOR, $arg);
+
             $path .= ($path != '') ? DIRECTORY_SEPARATOR  : '';
             $path .= $arg;
         }

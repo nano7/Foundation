@@ -53,12 +53,11 @@ class Filesystem extends \Illuminate\Filesystem\Filesystem
 
         $items = new \FilesystemIterator($path);
         foreach ($items as $item) {
-            if ($item->isFile() && (! $this->isLink())) {
-                $filename = $item->getPathname();
+            if ($item->isFile()) {
                 $filename = $item->getFilename();
 
                 if (Str::is($pattern, $filename)) {
-                    $deleteds += $this->delete($filename) ? 1 : 0;
+                    $deleteds += $this->delete($item->getPathname()) ? 1 : 0;
                 }
             }
         }

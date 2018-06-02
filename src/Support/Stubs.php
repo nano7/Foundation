@@ -52,7 +52,7 @@ class Stubs
      */
     public function exec($stubName, $outFile = null)
     {
-        if ($this->exists($stubName)) {
+        if (! $this->exists($stubName)) {
             throw new \Exception("Stub [$stubName] not found");
         }
 

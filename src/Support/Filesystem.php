@@ -1,5 +1,7 @@
 <?php namespace Nano7\Foundation\Support;
 
+use Illuminate\Support\Str;
+
 class Filesystem extends \Illuminate\Filesystem\Filesystem
 {
     /**
@@ -36,5 +38,31 @@ class Filesystem extends \Illuminate\Filesystem\Filesystem
         }
 
         return $this->makeDirectory($path, $mode, $recursive);
+    }
+
+    /**
+     * Delete files in dir.
+     *
+     * @param $path
+     * @param string $pattern
+     * @return int
+     */
+    public function deleteFiles($path, $pattern = '*')
+    {
+        $deleteds = 0;
+
+        $items = new \FilesystemIterator($path);
+        foreach ($items as $item) {
+            if ($item->isFile() && (! $this->isLink())) {
+                $filename = $item->getPathname();
+                $filename = $item->getFilename();
+
+                if (Str::is($pattern, $filename)) {
+                    $deleteds += $this->delete($filename) ? 1 : 0;
+                }
+            }
+        }
+
+        return $deleteds;
     }
 }

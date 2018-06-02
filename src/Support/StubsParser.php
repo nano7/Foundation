@@ -1,7 +1,5 @@
 <?php namespace Nano7\Foundation\Support;
 
-use Illuminate\Support\Str;
-
 class StubsParser
 {
     /**

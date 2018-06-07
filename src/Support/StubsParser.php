@@ -104,6 +104,8 @@ class StubsParser
      */
     protected function funcHas($data, $param, $true, $false)
     {
+        $param = str_replace('$', '', $param);
+
         return array_key_exists($param, $data) ? $true : $false;
     }
 
@@ -116,6 +118,8 @@ class StubsParser
      */
     protected function funcEmpty($data, $param, $true, $false)
     {
+        $param = str_replace('$', '', $param);
+
         if (! array_key_exists($param, $data)) {
             return $true;
         }

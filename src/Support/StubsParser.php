@@ -149,13 +149,11 @@ class StubsParser
     protected function expr($expr, $data)
     {
         if (preg_match('/^([$a-zA-Z0-9"_-]+)+ *?([!=<>]+)+([$a-zA-Z0-9"+_ -]+)+$/s', $expr, $args)) {
-            list($value1, $comp, $value2) = $args;
+            list($original, $value1, $comp, $value2) = $args;
 
             // Tratar parametros
-            foreach ($data as $key => $value) {
-                $value1 = str_replace('$' . $key, "' . $value . '", $value1);
-                $value2 = str_replace('$' . $key, "' . $value . '", $value2);
-            }
+            $value1 = $this->changeVars($value1, $data);
+            $value2 = $this->changeVars($value2, $data);
 
             $result = false;
             $code = sprintf('$return = ((%s) %s (%s))', $value1, $comp, $value2);
@@ -164,5 +162,28 @@ class StubsParser
         }
 
         throw new \Exception("Invalid expression [$expr]");
+    }
+
+    /**
+     * Trocar vars.
+     *
+     * @param $str
+     * @param $data
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function changeVars($str, $data)
+    {
+        preg_match_all('/\\$([a-zA-Z0-9_-]+)+/i', $str, $vars, PREG_PATTERN_ORDER);
+        for ($i = 0; $i < count($vars[0]); $++) {
+            $var = $vars[1][$i];
+            if (! array_key_exists($vars, $data)) {
+                throw new \Exception("var [$var] not identify");
+            }
+
+            $str = str_replace($vars[0][$i], '"' . $data[$vars] . '"', $str);
+        }
+
+        return $str;
     }
 }

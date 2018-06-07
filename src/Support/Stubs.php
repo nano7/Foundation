@@ -96,4 +96,33 @@ class Stubs
     {
         return $this->files->combine($this->path, $stubName . '.stub');
     }
+
+    /**
+     * @param $list
+     * @param $nPrefix
+     * @param $format
+     * @param string $limiter
+     * @return string
+     */
+    public static function listToStr($list, $nPrefix, $format, $limiter = ',')
+    {
+        $str = '';
+        $prefix = str_pad('', $nPrefix, ' ', STR_PAD_LEFT);
+        foreach ($list as $key => $value) {
+            $line = sprintf("\r\n%s%s%s", $prefix, $format, $limiter);
+            $line = str_replace([':name:',':value:',':str:'], [$key, $value, $value], $line);
+
+            $str .= $line;
+        }
+
+        // Terminar lista
+        if ($str != '') {
+            $prefix = str_pad('', $nPrefix - 4, ' ', STR_PAD_LEFT);
+            $line = sprintf("\r\n%s", $prefix);
+
+            $str .= $line;
+        }
+
+        return $str;
+    }
 }

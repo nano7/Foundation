@@ -156,7 +156,7 @@ class StubsParser
             $value2 = $this->changeVars($value2, $data);
 
             $result = false;
-            $code = sprintf('$return = ((%s) %s (%s))', $value1, $comp, $value2);
+            $code = sprintf('$return = ((%s) %s (%s));', $value1, $comp, $value2);
             eval($code);
             return $result;
         }

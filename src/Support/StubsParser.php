@@ -177,11 +177,11 @@ class StubsParser
         preg_match_all('/\\$([a-zA-Z0-9_-]+)+/i', $str, $vars, PREG_PATTERN_ORDER);
         for ($i = 0; $i < count($vars[0]); $i++) {
             $var = $vars[1][$i];
-            if (! array_key_exists($vars, $data)) {
+            if (! array_key_exists($var, $data)) {
                 throw new \Exception("var [$var] not identify");
             }
 
-            $str = str_replace($vars[0][$i], '"' . $data[$vars] . '"', $str);
+            $str = str_replace($vars[0][$i], '"' . $data[$var] . '"', $str);
         }
 
         return $str;

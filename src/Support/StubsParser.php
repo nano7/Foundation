@@ -14,6 +14,7 @@ class StubsParser
     protected $parsers = [
         'parserParams',
         'parserFuncs',
+        'parserClearTwoBlankLines',
     ];
 
     /**
@@ -93,6 +94,59 @@ class StubsParser
         }
 
         return $content;
+    }
+
+    /**
+     * Parser: clear two blank lines.
+     *
+     * @param $content
+     * @param $data
+     * @return string
+     */
+    protected function parserClearTwoBlankLines($content, $data)
+    {
+        $text = str_replace(["\r\n","\r"], "\n", $content);
+        $lines = explode("\n", $text);
+        $return = [];
+
+        $lastLineBlank = false;
+        $lastChar = '';
+
+        foreach ($lines as $line) {
+            $lineTrim = trim($line);
+
+            if ($lineTrim == '') {
+                // Verificar se ultima linha foi branco
+                if ($lastLineBlank) {
+                    $line = false;
+                }
+
+                // Verificar ultima linha é um abre chaves
+                if ($lastChar == '{') {
+                    $line = false;
+                }
+
+                $lastLineBlank = true;
+            } else {
+                $endChaves = ($lineTrim == '}');
+
+                // Verificar se deve removar ultima linha em branco
+                if ($endChaves && $lastLineBlank) {
+                    array_pop($return);
+                }
+
+                $lastLineBlank = false;
+            }
+
+            // verificar se deve adicionar a linha
+            if ($line !== false) {
+                $return[] = $line;
+            }
+
+            $lastChar = ($lineTrim != '') ? substr($lineTrim, -1) : '';
+        }
+
+        return implode("\r\n", $return);
     }
 
     /**

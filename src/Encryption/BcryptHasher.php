@@ -19,7 +19,7 @@ class BcryptHasher
      */
     public function __construct(array $options = [])
     {
-        $this->rounds = $options['rounds'] ? $options['rounds'] : $this->rounds;
+        $this->rounds = isset($options['rounds']) ? $options['rounds'] : $this->rounds;
     }
 
     /**
@@ -107,6 +107,6 @@ class BcryptHasher
      */
     protected function cost(array $options = [])
     {
-        return $options['rounds'] ?? $this->rounds;
+        return isset($options['rounds']) ? $options['rounds'] : $this->rounds;
     }
 }

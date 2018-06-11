@@ -1,6 +1,7 @@
 <?php namespace Nano7\Foundation;
 
 use Nano7\Foundation\Discover\PackageManifest;
+use Nano7\Foundation\Encryption\BcryptHasher;
 use Nano7\Foundation\Encryption\Encrypter;
 use Nano7\Foundation\Support\ServiceProvider;
 use Nano7\Foundation\Support\Str;
@@ -86,6 +87,10 @@ class FoundationServiceProviders extends ServiceProvider
             }
 
             return new Encrypter($key, $cipher);
+        });
+
+        $this->app->singleton('bcrypt', function ($app) {
+            return new BcryptHasher($app['config']->get('encrypter', []));
         });
     }
 }

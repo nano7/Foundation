@@ -93,6 +93,23 @@ if (! function_exists('crypter')) {
     }
 }
 
+if (! function_exists('bcrypt')) {
+    /**
+     * @param string|null $value
+     * @param array $options
+     * @return string|\Nano7\Foundation\Encryption\BcryptHasher
+     */
+    function bcrypt($value = null, $options = [])
+    {
+        $bcrypt = app('bcrypt');
+        if (is_null($value)) {
+            return $bcrypt;
+        }
+
+        return $bcrypt->make($value, $options);
+    }
+}
+
 if (! function_exists('app_path')) {
     /**
      * Get the application path.

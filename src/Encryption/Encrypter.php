@@ -17,6 +17,14 @@ class Encrypter
     protected $cipher;
 
     /**
+     * @var array
+     */
+    protected static $cipherSupported = [
+        'AES-128-CBC',
+        'AES-256-CBC',
+    ];
+
+    /**
      * Create a new encrypter instance.
      *
      * @param  string  $key
@@ -46,6 +54,10 @@ class Encrypter
      */
     public static function supported($key, $cipher)
     {
+        if (! in_array($cipher, static::$cipherSupported)) {
+            return false;
+        }
+
         $length = mb_strlen($key, '8bit');
 
         return ($cipher === 'AES-128-CBC' && $length === 16) ||
@@ -60,6 +72,10 @@ class Encrypter
      */
     public static function generateKey($cipher)
     {
+        if (! in_array($cipher, static::$cipherSupported)) {
+            return null;
+        }
+
         return random_bytes($cipher == 'AES-128-CBC' ? 16 : 32);
     }
 

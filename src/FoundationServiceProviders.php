@@ -1,7 +1,9 @@
 <?php namespace Nano7\Foundation;
 
 use Nano7\Foundation\Discover\PackageManifest;
+use Nano7\Foundation\Encryption\Encrypter;
 use Nano7\Foundation\Support\ServiceProvider;
+use Nano7\Foundation\Support\Str;
 
 class FoundationServiceProviders extends ServiceProvider
 {
@@ -15,6 +17,8 @@ class FoundationServiceProviders extends ServiceProvider
         $this->registerFiles();
 
         $this->registerConfigs();
+
+        $this->registerEncrypter();
 
         $this->registerDiscover();
     }
@@ -60,5 +64,28 @@ class FoundationServiceProviders extends ServiceProvider
         $this->app->alias('manifest', 'Nano7\Foundation\Discover\PackageManifest');
 
         $this->command('\Nano7\Foundation\Discover\Console\PackageDiscoverCommand');
+    }
+
+    /**
+     * Register encrypter.
+     */
+    protected function registerEncrypter()
+    {
+        $this->app->singleton('encrypter', function ($app) {
+            $key    = $app['config']->get('app.key');
+            $cipher = $app['config']->get('app.cipher');
+            if (empty($key)) {
+                throw new \RuntimeException('No application encryption key has been specified.');
+            }
+
+            // If the key starts with "base64:", we will need to decode the key before handing
+            // it off to the encrypter. Keys may be base-64 encoded for presentation and we
+            // want to make sure to convert them back to the raw bytes before encrypting.
+            if (Str::startsWith($key, 'base64:')) {
+                $key = base64_decode(substr($key, 7));
+            }
+
+            return new Encrypter($key, $cipher);
+        });
     }
 }

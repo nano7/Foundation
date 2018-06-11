@@ -77,6 +77,22 @@ if (! function_exists('config')) {
     }
 }
 
+if (! function_exists('crypter')) {
+    /**
+     * @param null|string $value
+     * @return string|\Nano7\Foundation\Encryption\Encrypter
+     */
+    function crypter($value = null)
+    {
+        $encryp = app('encrypter');
+        if (is_null($value)) {
+            return $encryp;
+        }
+
+        return $encryp->encryptString($value);
+    }
+}
+
 if (! function_exists('app_path')) {
     /**
      * Get the application path.

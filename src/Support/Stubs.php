@@ -102,21 +102,32 @@ class Stubs
      * @param $nPrefix
      * @param $format
      * @param string $limiter
+     * @param bool $sepInLast
+     * @param bool $rnInCloseList
      * @return string
      */
-    public static function listToStr($list, $nPrefix, $format, $limiter = ',')
+    public static function listToStr($list, $nPrefix, $format, $limiter = ',', $sepInLast = true, $rnInCloseList = true)
     {
         $str = '';
+        $i = 0;
+        $count = count($list);
         $prefix = str_pad('', $nPrefix, ' ', STR_PAD_LEFT);
         foreach ($list as $key => $value) {
-            $line = sprintf("\r\n%s%s%s", $prefix, $format, $limiter);
+
+            $sep = $limiter;
+            if (!$sepInLast && ($i >= $count-1)) {
+                $sep = '';
+            }
+
+            $line = sprintf("\r\n%s%s%s", $prefix, $format, $sep);
             $line = str_replace([':name:',':value:',':str:'], [$key, $value, $value], $line);
 
             $str .= $line;
+            $i++;
         }
 
         // Terminar lista
-        if ($str != '') {
+        if (($str != '') && $rnInCloseList) {
             $prefix = str_pad('', $nPrefix - 4, ' ', STR_PAD_LEFT);
             $line = sprintf("\r\n%s", $prefix);
 

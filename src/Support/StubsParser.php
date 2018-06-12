@@ -59,8 +59,14 @@ class StubsParser
      */
     protected function parserParams($content, $data)
     {
-        foreach ($data as $key => $value) {
-            $content = str_replace('{{' . $key . '}}', $value, $content);
+        while (preg_match('/\\{\\{ ?([a-zA-Z0-9_-]+)+ ?\\}\\}/s', $content, $args)) {
+            list($original, $pName) = $args;
+
+            if (! array_key_exists($pName, $data)) {
+                throw new \Exception("Param name [$pName] not information");
+            }
+
+            $content = str_replace($original, $data[$pName], $content);
         }
 
         return $content;

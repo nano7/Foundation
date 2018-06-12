@@ -102,7 +102,7 @@ class StubsParser
         $content = str_replace('##?php##', '<?php', $content);
 
         // Tratar resultado bonito
-        $content = $this->clearTwoBlankLines($content);
+        $content = $this->adjustFormatLines($content);
 
         return $content;
     }
@@ -248,18 +248,19 @@ class StubsParser
     }
 
     /**
-     * Parser: clear two blank lines.
+     * Parser: ajustar formatação das linhas.
      *
      * @param $content
      * @return string
      */
-    protected function clearTwoBlankLines($content)
+    protected function adjustFormatLines($content)
     {
         $text = str_replace(["\r\n","\r"], "\n", $content);
         $lines = explode("\n", $text);
         $return = [];
 
         $lastLineBlank = false;
+        $lastLineComment = false;
         $lastChar = '';
 
         foreach ($lines as $line) {
@@ -271,16 +272,23 @@ class StubsParser
                     $line = false;
                 }
 
+                // Verificar se ultima linha foi um comentario
+                if ($lastLineComment) {
+                    $line = false;
+                }
+
                 // Verificar ultima linha é um abre chaves
                 if ($lastChar == '{') {
                     $line = false;
                 }
 
                 $lastLineBlank = true;
+                $lastLineComment = false;
             } else {
                 $endChaves = ($lineTrim == '}');
+                $lastLineComment = Str::startsWith($lineTrim, '//');
 
-                // Verificar se deve removar ultima linha em branco
+                // Verificar se deve remover ultima linha em branco
                 if ($endChaves && $lastLineBlank) {
                     array_pop($return);
                 }

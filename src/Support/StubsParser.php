@@ -77,7 +77,7 @@ class StubsParser
     {
         //while (preg_match('/@([a-zA-Z_]+){1}\\((.*?)\\)(.*?)(@else(.*?))?@end\\1/s', $content, $args)) {
 
-        while (preg_match('/@((no)?([a-zA-Z_]+)){1}\\((.*?)\\)(.*?)(@else(.*?))?@end\\1/s', $content, $args)) {
+        while (preg_match('/@((no)?([a-zA-Z_]+)){1} *\\((.*?)\\)(.*?)(@else(.*?))?@end\\1/s', $content, $args)) {
             list($original, $cmd, $not, $func, $param, $true, $ignore, $false) = $args;
 
             $method = sprintf('func%s', Str::studly($func));

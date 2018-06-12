@@ -1,4 +1,6 @@
-<?php namespace Nano7\Foundation\Support;
+<?php namespace Nano7\Foundation\Stubs;
+
+use Nano7\Foundation\Support\Filesystem;
 
 class Stubs
 {
@@ -18,12 +20,19 @@ class Stubs
     protected $files;
 
     /**
+     * @var StubsParser
+     */
+    protected $parser;
+
+    /**
      * @param $path
      */
     public function __construct($path)
     {
         $this->files = new Filesystem();
         $this->path = $path;
+
+        $this->parser = new StubsParser($this);
     }
 
     /**
@@ -56,8 +65,7 @@ class Stubs
             throw new \Exception("Stub [$stubName] not found");
         }
 
-        $parser = new StubsParser();
-        $content = $parser->parser($this->makeNameFile($stubName), $this->data);
+        $content = $this->parser->make($this->makeNameFile($stubName), $this->data);
 
         // Verificar se deve gerar arquivo
         if (! is_null($outFile)) {
@@ -65,6 +73,20 @@ class Stubs
         }
 
         return $content;
+    }
+
+    /**
+     * @param $stubName
+     * @param array $data
+     * @return \Exception
+     */
+    public function make($stubName, $data = [])
+    {
+        $sub = new Stubs($this->path);
+        $sub->with($data);
+
+
+        return $sub->exec($stubName);
     }
 
     /**
@@ -135,5 +157,39 @@ class Stubs
         }
 
         return $str;
+    }
+
+    /**
+     * Register a custom Blade compiler.
+     *
+     * @param  callable  $compiler
+     * @return void
+     */
+    public function extend(callable $compiler)
+    {
+        $this->parser->extend($compiler);
+    }
+
+    /**
+     * Register a handler for custom directives.
+     *
+     * @param  string  $name
+     * @param  callable  $handler
+     * @return void
+     */
+    public function directive($name, callable $handler)
+    {
+        $this->parser->directive($name, $handler);
+    }
+
+    /**
+     * Add condition.
+     *
+     * @param $name
+     * @param callable $callback
+     */
+    public function condition($name, callable $callback)
+    {
+        $this->parser->condition($name, $callback);
     }
 }

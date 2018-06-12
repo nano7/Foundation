@@ -6,6 +6,7 @@ use Nano7\Foundation\Support\Filesystem;
 
 class StubsParser
 {
+    use Compiles\Loops;
     use Compiles\Comments;
     use Compiles\Includes;
     use Compiles\Conditions;
@@ -135,8 +136,8 @@ class StubsParser
         } catch (\Exception $e) {
             $this->handleViewException($e, $obLevel);
         } finally {
-        @unlink($__path);
-    }
+            @unlink($__path);
+        }
 
         return ltrim(ob_get_clean());
     }
@@ -201,7 +202,7 @@ class StubsParser
     {
         return preg_replace_callback(
             '/\B@(@?\w+(?:::\w+)?)([ \t]*)(\( ( (?>[^()]+) | (?3) )* \))?/x', function ($match) {
-                return $this->compileStatement($match);
+                return $this->compileStatement($match) . ' ';
             }, $value
         );
     }

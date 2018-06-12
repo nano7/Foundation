@@ -262,6 +262,7 @@ class StubsParser
         $lastLineBlank = false;
         $lastLineComment = false;
         $lastChar = '';
+        $lastLine = '';
 
         foreach ($lines as $line) {
             $lineTrim = trim($line);
@@ -288,6 +289,14 @@ class StubsParser
                 $endChaves = ($lineTrim == '}');
                 $lastLineComment = Str::startsWith($lineTrim, '//');
 
+                // Verificar se separador , deve subir para a linha anterior
+                if (($lineTrim == ',') && (! Str::endsWith($lastLine, ','))) {
+                    $line = false;
+                    $last = array_pop($return);
+                    $last .= ',';
+                    $return[] = $last;
+                }
+
                 // Verificar se deve remover ultima linha em branco
                 if ($endChaves && $lastLineBlank) {
                     array_pop($return);
@@ -302,6 +311,7 @@ class StubsParser
             }
 
             $lastChar = ($lineTrim != '') ? substr($lineTrim, -1) : '';
+            $lastLine = $lineTrim;
         }
 
         return implode("\r\n", $return);

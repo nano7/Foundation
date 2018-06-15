@@ -139,15 +139,16 @@ if (! function_exists('config_path')) {
 if (! function_exists('trans')) {
     /**
      * @param null $key
+     * @param array $replace
      * @return string
      */
-    function trans($key)
+    function trans($key, array $replace = [])
     {
         // TRaduzir para jargon
-        $value = jargon($key);
+        $value = jargon($key, $replace);
 
         // Traduzir idioma
-        $value = lang($value);
+        $value = lang($value, $replace);
 
         return $value;
     }

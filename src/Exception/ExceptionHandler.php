@@ -1,6 +1,7 @@
 <?php namespace Nano7\Foundation\Exception;
 
 use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\ExceptionHandler
 {
@@ -24,16 +25,18 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
      */
     public function render($request, Exception $e)
     {
-        // Veriifcar se foi implemetado uma view no app
-        $view = 'errors.' . $e->getStatusCode();
-        if (view()->exists($view)) {
-            return view($view)->render();
-        }
+        if ($e instanceof HttpException) {
+            // Veriifcar se foi implemetado uma view no app
+            $view = 'errors.' . $e->getStatusCode();
+            if (view()->exists($view)) {
+                return view($view)->render();
+            }
 
-        // Verificar se foi implememtado uma view no theme
-        $view = 'theme::errors.' . $e->getStatusCode();
-        if (view()->exists($view)) {
-            return view($view)->render();
+            // Verificar se foi implememtado uma view no theme
+            $view = 'theme::errors.' . $e->getStatusCode();
+            if (view()->exists($view)) {
+                return view($view)->render();
+            }
         }
 
         return 'error: ' . $e->getStatusCode();

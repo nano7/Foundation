@@ -22,6 +22,8 @@ class FoundationServiceProviders extends ServiceProvider
         $this->registerEncrypter();
 
         $this->registerDiscover();
+
+        $this->registerException();
     }
 
     /**
@@ -92,5 +94,16 @@ class FoundationServiceProviders extends ServiceProvider
         $this->app->singleton('bcrypt', function ($app) {
             return new BcryptHasher($app['config']->get('encrypter', []));
         });
+    }
+
+    /**
+     * Register control exception.
+     */
+    protected function registerException()
+    {
+        $this->app->singleton(
+            'Nano7\Foundation\Contracts\Exception\ExceptionHandler',
+            'Nano7\Foundation\Exception\ExceptionHandler'
+        );
     }
 }

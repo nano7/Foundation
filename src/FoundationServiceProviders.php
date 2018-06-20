@@ -32,7 +32,15 @@ class FoundationServiceProviders extends ServiceProvider
     protected function registerEvents()
     {
         $this->app->singleton('events', function () {
-            return new \Nano7\Foundation\Events\Dispatcher($this->app);
+            $events = new \Nano7\Foundation\Events\Dispatcher($this->app);
+
+            // Carregar listens
+            $listen_file = app_path('listens.php');
+            if (file_exists($listen_file)) {
+                require $listen_file;
+            }
+
+            return $events;
         });
     }
 

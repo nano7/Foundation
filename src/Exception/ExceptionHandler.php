@@ -48,7 +48,7 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
             return $back;
         }
 
-        return 'error: ' . $e->getStatusCode();
+        return 'error: ' . $e->getMessage();
     }
 
     /**

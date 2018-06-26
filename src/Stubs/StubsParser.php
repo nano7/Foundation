@@ -100,6 +100,7 @@ class StubsParser
         $content = $this->evaluateContent($content, $data);
 
         $content = str_replace('##?php##', '<?php', $content);
+        $content = str_replace('#@#', '@', $content);
 
         // Tratar resultado bonito
         $content = $this->adjustFormatLines($content);

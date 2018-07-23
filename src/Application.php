@@ -250,7 +250,7 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
-     * Return is running in mode web.
+     * Return is running in mode web in API group.
      *
      * @return bool
      */
@@ -275,5 +275,15 @@ class Application extends \Illuminate\Container\Container
     public function runningConsole()
     {
         return ($this['mode'] == 'console');
+    }
+
+    /**
+     * Return is running in mode debug.
+     *
+     * @return bool
+     */
+    public function runningDebug()
+    {
+        return config()->get('app.debug', false);
     }
 }

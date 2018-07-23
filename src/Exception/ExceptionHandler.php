@@ -26,6 +26,11 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
      */
     public function render($request, Exception $e)
     {
+        // Verificar se deve responser como API
+        if (app()->runningWebApi()) {
+            return $this->renderApi($request, $e);
+        }
+
         // Exceções Http
         if ($e instanceof HttpException) {
             // Veriifcar se foi implemetado uma view no app
@@ -49,6 +54,37 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
         }
 
         return 'error: ' . $e->getMessage();
+    }
+
+    /**
+     * @param $request
+     * @param Exception $e
+     * @return \Nano7\Http\JsonResponse
+     */
+    protected function renderApi($request, Exception $e)
+    {
+        // Error via web.api response
+        $ej = ['error' => ['message' => $e->getMessage()]];
+
+        if ($e->getCode() > 0) {
+            $ej['error']['code'] = $e->getCode();
+        }
+
+        if ($e instanceof HttpException) {
+            $ej['error']['code'] = $e->getStatusCode();
+        }
+
+        if ($e instanceof ErrorsException) {
+            $ej['error']['errors'] = $e->getErrors();
+        }
+
+        if (app()->runningDebug()) {
+            $ej['error']['file'] = $e->getFile();
+            $ej['error']['line'] = $e->getLine();
+            $ej['error']['trace'] = $e->getTrace();
+        }
+
+        return response()->json($ej);
     }
 
     /**

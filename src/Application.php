@@ -250,6 +250,24 @@ class Application extends \Illuminate\Container\Container
     }
 
     /**
+     * Return is running in mode web.
+     *
+     * @return bool
+     */
+    public function runningWebApi()
+    {
+        if (! $this->runningWeb()) {
+            return false;
+        }
+
+        if (! function_exists('in_api')) {
+            return false;
+        }
+
+        return in_api();
+    }
+
+    /**
      * Return is running in mode console.
      *
      * @return bool

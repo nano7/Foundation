@@ -2,8 +2,8 @@
 
 use Closure;
 use Illuminate\Support\Str;
-use Nano7\Application;
 use InvalidArgumentException;
+use Nano7\Foundation\Application;
 
 abstract class Manager
 {

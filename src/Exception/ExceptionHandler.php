@@ -7,6 +7,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\ExceptionHandler
 {
     /**
+     * @var null|\Nano7\View\Factory
+     */
+    protected $viewService = null;
+
+    /**
      * Report or log an exception.
      *
      * @param  \Exception $e
@@ -32,17 +37,17 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
         }
 
         // Exceções Http
-        if ($e instanceof HttpException) {
+        if ((! is_null($this->viewService)) && ($e instanceof HttpException)) {
             // Veriifcar se foi implemetado uma view no app
             $view = 'errors.' . $e->getStatusCode();
-            if (view()->exists($view)) {
-                return view($view)->render();
+            if ($this->getViewService()->exists($view)) {
+                return $this->getViewService()->make($view)->render();
             }
 
             // Verificar se foi implememtado uma view no theme
             $view = 'theme::errors.' . $e->getStatusCode();
-            if (view()->exists($view)) {
-                return view($view)->render();
+            if ($this->getViewService()->exists($view)) {
+                return $this->getViewService()->make($view)->render();
             }
         }
 
@@ -97,5 +102,24 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
     public function renderForConsole($output, Exception $e)
     {
         // TODO: Implement renderForConsole() method.
+    }
+
+    /**
+     * @param $service
+     * @return $this
+     */
+    public function setViewService($service)
+    {
+        $this->viewService = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return \Nano7\View\Factory|null
+     */
+    public function getViewService()
+    {
+        return $this->viewService;
     }
 }

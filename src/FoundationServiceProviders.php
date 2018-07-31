@@ -22,7 +22,13 @@ class FoundationServiceProviders extends ServiceProvider
         $this->registerEncrypter();
 
         $this->registerDiscover();
+    }
 
+    /**
+     * Register objetos no boot.
+     */
+    public function boot()
+    {
         $this->registerException();
     }
 
@@ -109,9 +115,15 @@ class FoundationServiceProviders extends ServiceProvider
      */
     protected function registerException()
     {
-        $this->app->singleton(
-            'Nano7\Foundation\Contracts\Exception\ExceptionHandler',
-            'Nano7\Foundation\Exception\ExceptionHandler'
-        );
+        $this->app->singleton('Nano7\Foundation\Contracts\Exception\ExceptionHandler', function ($app) {
+            $except = new \Nano7\Foundation\Exception\ExceptionHandler();
+
+            // Verificar se view foi adicionada
+            if ($app->resolved('view')) {
+                $except->setViewService($app['view']);
+            }
+
+            return $except;
+        });
     }
 }

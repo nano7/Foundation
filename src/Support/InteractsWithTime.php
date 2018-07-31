@@ -1,7 +1,7 @@
 <?php namespace Nano7\Foundation\Support;
 
-use Carbon\Carbon;
 use DateInterval;
+use Carbon\Carbon;
 use DateTimeInterface;
 
 trait InteractsWithTime

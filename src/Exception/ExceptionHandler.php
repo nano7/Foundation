@@ -37,17 +37,23 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
         }
 
         // Exceções Http
-        if ((! is_null($this->viewService)) && ($e instanceof HttpException)) {
-            // Veriifcar se foi implemetado uma view no app
-            $view = 'errors.' . $e->getStatusCode();
-            if ($this->getViewService()->exists($view)) {
-                return $this->getViewService()->make($view)->render();
-            }
+        if ($e instanceof HttpException) {
+            if (! is_null($this->viewService)) {
+                // Veriifcar se foi implemetado uma view no app
+                $view = 'errors.' . $e->getStatusCode();
+                if ($this->getViewService()->exists($view)) {
+                    return $this->getViewService()->make($view)->render();
+                }
 
-            // Verificar se foi implememtado uma view no theme
-            $view = 'theme::errors.' . $e->getStatusCode();
-            if ($this->getViewService()->exists($view)) {
-                return $this->getViewService()->make($view)->render();
+                // Verificar se foi implememtado uma view no theme
+                $view = 'theme::errors.' . $e->getStatusCode();
+                if ($this->getViewService()->exists($view)) {
+                    return $this->getViewService()->make($view)->render();
+                }
+            } else {
+                $message = $e->getMessage();
+                $message = ($message == '') ? $e->getStatusCode() : $message;
+                return 'error: ' . $message;
             }
         }
 
@@ -57,6 +63,7 @@ class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\Exceptio
 
             return $back;
         }
+
 
         return 'error: ' . $e->getMessage();
     }

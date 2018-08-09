@@ -173,6 +173,11 @@ class StubsParser
     {
         $result = '';
 
+        // Block raw php
+        if (strpos($value, '@php') !== false) {
+            $value = $this->storePhpBlocks($value);
+        }
+
         foreach (token_get_all($value) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
@@ -193,6 +198,19 @@ class StubsParser
         }
 
         return $value;
+    }
+
+    /**
+     * Store the PHP blocks and replace them with a temporary placeholder.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function storePhpBlocks($value)
+    {
+        return preg_replace_callback('/(?<!@)@php(.*?)@endphp/s', function ($matches) {
+            return "<?php{$matches[1]}?>";
+        }, $value);
     }
 
     /**

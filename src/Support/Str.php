@@ -19,7 +19,7 @@ class Str extends \Illuminate\Support\Str
             $rets[] = strtolower($item);
         }
 
-        return $rets;
+        return implode('_', $rets);
     }
 
     /**

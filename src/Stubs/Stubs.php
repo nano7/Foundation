@@ -69,6 +69,10 @@ class Stubs
 
         // Verificar se deve gerar arquivo
         if (! is_null($outFile)) {
+            // Forçar criação do diretorio se não existir
+            $pathOut = $this->files->dirname($outFile);
+            $this->files->force($pathOut);
+
             $this->files->put($outFile, $content);
         }
 

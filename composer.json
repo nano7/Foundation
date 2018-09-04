@@ -18,8 +18,7 @@
         "illuminate/support"    : "5.4.*",
         "illuminate/translation": "5.4.*",
         "vlucas/phpdotenv"      : "^2.4",
-        "nesbot/carbon"         : "^1.20",
-        "phpunit/phpunit"       : "^5.7"
+        "nesbot/carbon"         : "^1.20"
     },
 
     "require_dev": {

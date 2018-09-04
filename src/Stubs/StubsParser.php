@@ -290,6 +290,7 @@ class StubsParser
 
             if ($lineTrim == '') {
                 // Verificar se ultima linha foi branco
+                // Para remover duplos enters
                 if ($lastLineBlank) {
                     $line = false;
                 }
@@ -300,11 +301,12 @@ class StubsParser
                 }
 
                 // Verificar ultima linha é um abre chaves
+                // Para não ter enter depois do abre chaves (Chaves do inicio da classe)
                 if ($lastChar == '{') {
                     $line = false;
                 }
 
-                $lastLineBlank = true;
+                $lastLineBlank = $line;
                 $lastLineComment = false;
             } else {
                 $endChaves = ($lineTrim == '}');

@@ -1,7 +1,7 @@
 <?php namespace Nano7\Foundation\Discover;
 
 use Exception;
-use Nano7\Foundation\Support\Filesystem;
+use Nano7\Support\Filesystem;
 
 class PackageManifest
 {

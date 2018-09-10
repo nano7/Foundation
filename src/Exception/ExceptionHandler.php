@@ -1,7 +1,7 @@
 <?php namespace Nano7\Foundation\Exception;
 
 use Exception;
-use Nano7\Foundation\Support\ErrorsException;
+use Nano7\Support\ErrorsException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionHandler implements \Nano7\Foundation\Contracts\Exception\ExceptionHandler

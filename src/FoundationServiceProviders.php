@@ -1,10 +1,10 @@
 <?php namespace Nano7\Foundation;
 
-use Nano7\Foundation\Discover\PackageManifest;
-use Nano7\Foundation\Encryption\BcryptHasher;
+use Nano7\Support\Str;
 use Nano7\Foundation\Encryption\Encrypter;
+use Nano7\Foundation\Encryption\BcryptHasher;
 use Nano7\Foundation\Support\ServiceProvider;
-use Nano7\Foundation\Support\Str;
+use Nano7\Foundation\Discover\PackageManifest;
 
 class FoundationServiceProviders extends ServiceProvider
 {
@@ -56,7 +56,7 @@ class FoundationServiceProviders extends ServiceProvider
     protected function registerFiles()
     {
         $this->app->singleton('files', function () {
-            return new \Nano7\Foundation\Support\Filesystem();
+            return new \Nano7\Support\Filesystem();
         });
     }
 

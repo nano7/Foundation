@@ -14,11 +14,8 @@
         "php"                   : ">=5.5.0",
         "illuminate/config"     : "5.4.*",
         "illuminate/container"  : "5.4.*",
-        "illuminate/filesystem" : "5.4.*",
-        "illuminate/support"    : "5.4.*",
         "illuminate/translation": "5.4.*",
-        "vlucas/phpdotenv"      : "^2.4",
-        "nesbot/carbon"         : "^1.20"
+        "nano7/support"         : "dev-master"
     },
 
     "require_dev": {

@@ -1,6 +1,6 @@
 <?php
 
-use Carbon\Carbon;
+use Nano7\Support\Carbon;
 use Illuminate\Container\Container;
 
 if (! function_exists('app')) {
@@ -189,26 +189,6 @@ if (! function_exists('jargon')) {
         }
 
         return $trans->getFromJson($key, $replace, $locale);
-    }
-}
-
-if (! function_exists('env')) {
-    /**
-     * Gets the value of an environment variable.
-     *
-     * @param  string  $key
-     * @param  mixed   $default
-     * @return mixed
-     */
-    function env($key, $default = null)
-    {
-        $value = getenv($key);
-
-        if ($value === false) {
-            return value($default);
-        }
-
-        return \Nano7\Foundation\Support\Str::value($value);
     }
 }
 

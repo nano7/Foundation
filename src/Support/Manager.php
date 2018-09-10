@@ -1,7 +1,7 @@
 <?php namespace Nano7\Foundation\Support;
 
 use Closure;
-use Illuminate\Support\Str;
+use Nano7\Support\Str;
 use InvalidArgumentException;
 use Nano7\Foundation\Application;
 

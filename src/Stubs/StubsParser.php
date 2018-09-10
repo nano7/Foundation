@@ -1,8 +1,8 @@
 <?php namespace Nano7\Foundation\Stubs;
 
-use Nano7\Foundation\Support\Arr;
-use Nano7\Foundation\Support\Str;
-use Nano7\Foundation\Support\Filesystem;
+use Nano7\Support\Arr;
+use Nano7\Support\Str;
+use Nano7\Support\Filesystem;
 
 class StubsParser
 {

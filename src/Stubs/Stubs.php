@@ -1,6 +1,6 @@
 <?php namespace Nano7\Foundation\Stubs;
 
-use Nano7\Foundation\Support\Filesystem;
+use Nano7\Support\Filesystem;
 
 class Stubs
 {
